@@ -6,22 +6,28 @@
 
 
 
-@eqkh
-- [ ] add domains & get ftp creds
-- [ ] init db & get creds
-
-
-
-
-
-
 
 ## Setup Guide
 
 
-# Svelte
+### 1 - env setup (@eqkh)
+- [ ] add domains & get ftp creds
+  - [ ] projectdomain.com
+  - [ ] api.projectdomain.com
+  - [ ] admin.projectdomain.com
+- [ ] init db & get creds
 
-### sveltekit install
+
+
+### 2 - create repos
+
+- [ ] [create new repos](https://bitbucket.org/repo/create) @ bitbucket
+  - [ ] projectdomain.com
+  - [ ] api.projectdomain.com
+  - [ ] admin.projectdomain.com
+
+
+### 3 - (FE) [sveltekit](https://kit.svelte.dev/) install
 @local
 
 - npm init svelte@next my-app
@@ -40,6 +46,24 @@ sveltekit build
 - install static adapter - [https://github.com/sveltejs/kit/tree/master/packages/adapter-static](https://github.com/sveltejs/kit/tree/master/packages/adapter-static)
 
 
+
+## 4 - (api) [stereo](https://stereotk.com/) install
+
+
+### 5 - (admin) [darkwave](https://darkwave.ltd/) install
+
+
+
+
+
+
+
+
+
+## Workflow
+
+
+
 ### svelte dev workflow
 
 - npm run dev
@@ -56,3 +80,5 @@ sveltekit build
 
 - cd dir
 - git pull
+
+

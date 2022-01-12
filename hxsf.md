@@ -19,10 +19,15 @@ mkdir jy.hxgf
 cd jy.hxgf
 npx degit hxgf/scratch
 ```
-- [ ] add ftp creds
+- [ ] add ftp creds for vscode (w/ [sftp sync extension](https://marketplace.visualstudio.com/items?itemName=liximomo.sftp))
+- a) in vscode: `cmd+shift+p` --> 'SFTP: Config'
+- b) or copy config from hxgf
 ```
-[in vscode] cmd+shift+p --> 'SFTP: Config'
+mkdir .vscode && cp ../hxgf.io/.vscode/sftp.json ./.vscode
 ```
+
+- [ ] upload everything so far
+
 - [ ] add .gitignore
 ```
 echo ".DS_Store\n.vscode/" >> .gitignore
