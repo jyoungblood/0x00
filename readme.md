@@ -36,13 +36,13 @@
 
 ### 3 - (admin) [darkwave](https://darkwave.ltd/) install
 @local
-npx degit darkwve
-vscode sftp (creds + upload)
-git init & push
-?? add vscode to gitignore?
-?? anything on the server? (set up repo? or just do git stuff locally?)
+- npx degit darkwve
+- vscode sftp (creds + upload)
+- git init & push
+- ?? add vscode to gitignore?
+- ?? anything on the server? (set up repo? or just do git stuff locally?)
 
-go through setup process w/ dw (connect to db)
+- go through setup process w/ dw (connect to db)
 
 
 
@@ -50,14 +50,14 @@ go through setup process w/ dw (connect to db)
 ### 4 - (api) [stereo](https://stereotk.com/) install
 
 @local
-npx degit stereo
-vscode sftp (creds + upload)
-git init & push (on server? & overwrite local copy when done?)
-?? add vscode to gitignore?
-?? anything on the server? (set up repo? or just do git stuff locally?)
+- npx degit stereo
+- vscode sftp (creds + upload)
+- git init & push (on server? & overwrite local copy when done?)
+- ?? add vscode to gitignore?
+- ?? anything on the server? (set up repo? or just do git stuff locally?)
 
-edit settings to connect to database
-copy/paste a simple test route
+- edit settings to connect to database
+- copy/paste a simple test route
 
 
 
@@ -75,9 +75,9 @@ copy/paste a simple test route
 
 - git init & push
 
-?? copy/paste simple route to connect to api & verify working
+- ?? copy/paste simple route to connect to api & verify working
 
-?? special stuff we have to do to set up tailwind?
+- ?? special stuff we have to do to set up tailwind?
 
 
 @server
@@ -125,34 +125,3 @@ copy/paste a simple test route
 - OR - just use git locally, version on the server is just sent via ftp
 
 
-
-# example md syntax
-
-## dropdown
-
-<details>
-<summary>To make sure markdown is rendered correctly in the collapsed section...</summary>
-
- 1. Put an **empty line** after the `<summary>` block.
- 2. *Insert your markdown syntax*
- 3. Put an **empty line** before the `</details>` tag
- 
-</details>
-
-## file tree
-
-```graphql
-# Code & components for pages
-./src/* 
-  ├─ src/assets - # Minified images, fonts, icon files
-  ├─ src/components - # Individual smaller components
-  ├─ src/fragments - # Larger chunks of a page composed of multiple components
-  ├─ src/layouts - # Page layouts used for different types of pages composed of components and fragments
-  ├─ src/page - # Custom pages or pages composed of layouts with hardcoded data components, fragments, & layouts
-  ├─ src/pages/* - # Next.js file based routing
-  │  ├─ _app.js - # next.js app entry point
-  │  ├─ _document.js - # next.js document wrapper
-  │  ├─ global.css - #  Global CSS styles
-  │  └─ Everything else... - # File based routing
-  └─ src/utils - # Utility functions used in various places
-```
