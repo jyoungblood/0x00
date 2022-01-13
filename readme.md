@@ -1,6 +1,6 @@
 # 0x00 - Full CRUD app starter kit
 
-[setup guide](#setup-guide)  | [workflow](#workflow) | [boilerplate](/boilerplate/readme.md) | [component catalog](/components/readme.md)
+| [Setup Guide](#setup-guide)  | [Workflow](#workflow) | [Boilerplate](/boilerplate/readme.md) | [Component Catalog](/components/readme.md) |
 
 ![0x00 diagram](/images/0x00-diagram.png?raw=true)
 
@@ -11,10 +11,12 @@
 
 
 ### 1 - env setup (@eqkh)
+
 - [ ] add domains & get ftp creds
   - [ ] projectdomain.com
   - [ ] api.projectdomain.com
   - [ ] admin.projectdomain.com
+
 - [ ] init db & get creds
 
 
@@ -27,7 +29,41 @@
   - [ ] admin.projectdomain.com
 
 
-### 3 - (FE) [sveltekit](https://kit.svelte.dev/) install
+
+
+
+
+
+### 3 - (admin) [darkwave](https://darkwave.ltd/) install
+@local
+npx degit darkwve
+vscode sftp (creds + upload)
+git init & push
+?? add vscode to gitignore?
+?? anything on the server? (set up repo?)
+
+go through setup process w/ dw (connect to db)
+
+
+
+
+### 4 - (api) [stereo](https://stereotk.com/) install
+
+@local
+npx degit stereo
+vscode sftp (creds + upload)
+git init & push (on server? & overwrite local copy when done?)
+?? add vscode to gitignore?
+?? anything on the server? (set up repo?)
+
+edit settings to connect to database
+copy/paste a simple test route
+
+
+
+
+
+### 5 - (FE) [sveltekit](https://kit.svelte.dev/) install
 @local
 
 - npm init svelte@next my-app
@@ -35,22 +71,23 @@
 - npm install
 - npm run dev
 
+- install static adapter - [https://github.com/sveltejs/kit/tree/master/packages/adapter-static](https://github.com/sveltejs/kit/tree/master/packages/adapter-static)
+
+- git init & push
+
+?? copy/paste simple route to connect to api & verify working
+
+
+
 @server
 
 - clone repo (git init, remote add origin, fetch --all, pull origin master)
 - change docroot to /build
 - add .htaccess to /build
 
-sveltekit build
-
-- install static adapter - [https://github.com/sveltejs/kit/tree/master/packages/adapter-static](https://github.com/sveltejs/kit/tree/master/packages/adapter-static)
 
 
 
-### 4 - (api) [stereo](https://stereotk.com/) install
-
-
-### 5 - (admin) [darkwave](https://darkwave.ltd/) install
 
 
 
@@ -64,14 +101,11 @@ sveltekit build
 
 
 
-### svelte dev workflow
-
-- npm run dev
-
-### svelte deploy workflow
+### (FE) svelte dev/deploy workflow
 
 @local
 
+- npm run dev
 - npm run build
 - git commit
 - git push
@@ -82,3 +116,8 @@ sveltekit build
 - git pull
 
 
+### (api/admin) stereo/dw dev workflow
+- ?? edit the code in vscode, automatically uploaded via ftp
+- end of sesh
+  - @ server: cd /s/blu-api, git add/commit/push
+  - @ local: git fetch --all, git reset --hard origin/master
