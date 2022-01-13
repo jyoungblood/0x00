@@ -1,11 +1,11 @@
-<p align="center">
+<center>
 # 0x00 - Full CRUD app starter kit
 
 [setup guide](#setup-guide)  | [workflow](#workflow) | [boilerplate](/boilerplate/readme.md) | [component catalog](/components/readme.md)
 
 ![0x00 diagram](/images/0x00-diagram.png?raw=true)
 
-</p>
+</center>
 
 
 ---
