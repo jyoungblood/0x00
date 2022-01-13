@@ -5,7 +5,7 @@
 ![0x00 diagram](/images/0x00-diagram.png?raw=true)
 
 
-
+---
 
 ## Setup Guide
 
@@ -47,7 +47,7 @@ sveltekit build
 
 
 
-## 4 - (api) [stereo](https://stereotk.com/) install
+### 4 - (api) [stereo](https://stereotk.com/) install
 
 
 ### 5 - (admin) [darkwave](https://darkwave.ltd/) install
@@ -56,7 +56,7 @@ sveltekit build
 
 
 
-
+---
 
 
 
