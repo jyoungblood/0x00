@@ -40,7 +40,7 @@ npx degit darkwve
 vscode sftp (creds + upload)
 git init & push
 ?? add vscode to gitignore?
-?? anything on the server? (set up repo?)
+?? anything on the server? (set up repo? or just do git stuff locally?)
 
 go through setup process w/ dw (connect to db)
 
@@ -54,7 +54,7 @@ npx degit stereo
 vscode sftp (creds + upload)
 git init & push (on server? & overwrite local copy when done?)
 ?? add vscode to gitignore?
-?? anything on the server? (set up repo?)
+?? anything on the server? (set up repo? or just do git stuff locally?)
 
 edit settings to connect to database
 copy/paste a simple test route
@@ -77,6 +77,7 @@ copy/paste a simple test route
 
 ?? copy/paste simple route to connect to api & verify working
 
+?? special stuff we have to do to set up tailwind?
 
 
 @server
@@ -118,14 +119,14 @@ copy/paste a simple test route
 
 ### (api/admin) stereo/dw dev workflow
 - ?? edit the code in vscode, automatically uploaded via ftp
-- end of sesh
+- ?? end of sesh
   - @ server: cd /s/blu-api, git add/commit/push
   - @ local: git fetch --all, git reset --hard origin/master
+- OR - just use git locally, version on the server is just sent via ftp
 
 
 
-
-# example
+# example md syntax
 
 ## dropdown
 
