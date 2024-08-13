@@ -36,7 +36,7 @@ $app->get('/debug-email/?', function(){
   // }
   // $tenant_email_input = array(
   //   'to' => $_user['data'][0]['email'],
-  //   'from' => 'Ocean Management <application-'.$application_id.'@notifications.xxxxx.com>',
+  //   'from' => 'XXXX XXXX <application-'.$application_id.'@notifications.xxxxx.com>',
   //   'subject' => 'Showing Scheduled',
   //   'template' => 'email/tenant-showing-scheduled',
   //   'data' => array(
