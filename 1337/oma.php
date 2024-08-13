@@ -29,14 +29,14 @@ $app->get('/debug-email/?', function(){
     
 // fixit we still need to get a string of the date/time scheduled
 
-  // $contact_domain = 'port164.com';
+  // $contact_domain = 'xxxxx.com';
   // $_desired_development = db_find("developments", "_id = '".$input['desired_development_id']."'");
   // if ($_desired_development){
   //   $contact_domain = $_desired_development['data'][0]['domain'];
   // }
   // $tenant_email_input = array(
   //   'to' => $_user['data'][0]['email'],
-  //   'from' => 'Ocean Management <application-'.$application_id.'@notifications.oceancompaniesok.com>',
+  //   'from' => 'Ocean Management <application-'.$application_id.'@notifications.xxxxx.com>',
   //   'subject' => 'Showing Scheduled',
   //   'template' => 'email/tenant-showing-scheduled',
   //   'data' => array(
