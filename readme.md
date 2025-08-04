@@ -1,3 +1,8 @@
+
+### The good shit
+- [astro ssg deploy w/ cloudflare workers](https://github.com/jyoungblood/0x00/blob/master/astro-ssg-cloudflare.md)
+
+
 ### Deploy Scripts
 - [generic deploy.sh (git push)](https://github.com/jyoungblood/0x00/blob/master/deploy.sh)
 - [0x00-laravel-deploy](https://github.com/jyoungblood/0x00-laravel-deploy)
