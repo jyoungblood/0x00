@@ -5,6 +5,7 @@
 
 ### Deploy Scripts
 - [generic deploy.sh (git push)](https://github.com/jyoungblood/0x00/blob/master/deploy.sh)
+- [ssg deploy via ssh w/ rsync](https://github.com/jyoungblood/0x00/blob/master/deploy-ssg-ssh-rsync.sh)
 - [0x00-laravel-deploy](https://github.com/jyoungblood/0x00-laravel-deploy)
 - [0x00-11ty-deploy](https://github.com/jyoungblood/0x00-11ty-deploy)
 - [0x00-astro-deploy](https://github.com/jyoungblood/0x00-astro-deploy)
