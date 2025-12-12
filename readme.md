@@ -19,7 +19,6 @@
 
 ## DX custom tools
 
-- [s3bk-mysql](https://github.com/jyoungblood/s3bk/blob/master/s3bk-mysql.sh)
-- [s3bk-static](https://github.com/jyoungblood/s3bk/blob/master/s3bk-static.sh)
+- [s3bk - mysql & static backsups to s3](https://github.com/jyoungblood/s3bk)
 
 - [dbx - db export](https://github.com/jyoungblood/dbx) (formerly oceancom-db-export / oceancom-dump-local.sh)
