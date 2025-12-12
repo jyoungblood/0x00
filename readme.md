@@ -19,7 +19,7 @@
 
 ## DX custom tools
 
-- [s3bk-db](https://github.com/jyoungblood/0x00/blob/master/backup/s3bk-db.sh)
-- [s3bk-static](https://github.com/jyoungblood/0x00/blob/master/backup/s3bk-static.sh)
+- [s3bk-db](https://github.com/jyoungblood/s3bk/blob/master/s3bk-db.sh)
+- [s3bk-static](https://github.com/jyoungblood/s3bk/blob/master/s3bk-static.sh)
 
 - [dbx - db export](https://github.com/jyoungblood/dbx) (formerly oceancom-db-export / oceancom-dump-local.sh)
