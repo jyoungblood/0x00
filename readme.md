@@ -2,9 +2,10 @@
 ### The good shit
 - [astro ssg deploy process w/ cloudflare workers](https://github.com/jyoungblood/0x00/blob/master/deploy/astro-ssg-cloudflare.md)
 - [dw  (astro ssr) deploy script for vps](https://github.com/jyoungblood/0x00/blob/master/deploy/deploy-astro-vps-ssh.sh)
-  - [dw deploy docs](https://darkwavejs.com/workflow/deployment/)
+  - [dw deploy docs](https://darkwavejs.com/docs/workflow/deployment/)
 
-
+- [pm2 vps reseller systemd setup](https://github.com/jyoungblood/0x00/blob/master/pm2/pm2-vps.md)
+  - [(old version, from dw deployment)](https://github.com/jyoungblood/0x00/blob/master/pm2/pm2-vps-old.md)
 
 
 
