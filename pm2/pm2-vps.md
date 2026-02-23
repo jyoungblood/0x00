@@ -17,6 +17,7 @@ updated command with the correct paths should look something like this:
 `sudo env PATH=$PATH:/home/equinox/.nvm/versions/node/v24.13.1/bin /home/equinox/.nvm/versions/node/v24.13.1/bin/pm2 startup systemd -u equinox --hp /home/equinox`
 
 THEN, run this command as root, and make the following modifications/overrides:
+(use the override instead of editing the service file directly (would be overwritten by any future pm2 startup))
 
 `sudo systemctl edit pm2-equinox`
 
