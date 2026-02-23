@@ -342,7 +342,7 @@ git push origin $GIT_BRANCH
 # ssh $SSH_USER@$SSH_SERVER -p $SSH_PORT -t "cd $DEPLOYMENT_PATH && git restore package-lock.json && git pull origin $GIT_BRANCH && npm install && npm run build && npm run migrate && pm2 reload $PM2_APP_NAME"
 
 # source nvm in ssh command
-ssh $SSH_USER@$SSH_SERVER -p $SSH_PORT -t "export NVM_DIR=\$HOME/.nvm; . \$NVM_DIR/nvm.sh; nvm use --silent >/dev/null; cd $DEPLOYMENT_PATH && git restore package-lock.json && git pull origin $GIT_BRANCH && npm ci && npm run build && npm run migrate && pm2 reload $PM2_NAME"
+ssh $SSH_USER@$SSH_SERVER -p $SSH_PORT -t "export NVM_DIR=\$HOME/.nvm; . \$NVM_DIR/nvm.sh; nvm use --silent >/dev/null; cd $DEPLOYMENT_PATH && git restore package-lock.json && git pull origin $GIT_BRANCH && npm ci && npm run build && npm run migrate && pm2 reload $PM2_APP_NAME"
 
 
 
