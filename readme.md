@@ -9,10 +9,18 @@
 
 
 
+### Laravel VPS Deployment (WHM)
+
+- [basic deployment](laravel/basic-deployment.md)
+- [zero downtime deployment](laravel/zero-downtime-deployment.md)
+- [queue worker setup](laravel/queue-worker-setup.md)
+- [deploy.sh](laravel/deploy.sh)
+- [monitor.sh](laravel/monitor.sh)
+
 ### Deploy Scripts
 - [generic deploy.sh (git push)](https://github.com/jyoungblood/0x00/blob/master/deploy/deploy.sh)
 - [ssg deploy via ssh w/ rsync](https://github.com/jyoungblood/0x00/blob/master/deploy/deploy-ssg-ssh-rsync.sh)
-- [0x00-laravel-deploy](https://github.com/jyoungblood/0x00-laravel-deploy)
+- [(old) 0x00-laravel-deploy](https://github.com/jyoungblood/0x00-laravel-deploy)
 - [0x00-11ty-deploy](https://github.com/jyoungblood/0x00-11ty-deploy)
 - [0x00-astro-deploy](https://github.com/jyoungblood/0x00-astro-deploy)
 - [0x00-stereo-deploy](https://github.com/jyoungblood/0x00-stereo-deploy) (works for slime too)
