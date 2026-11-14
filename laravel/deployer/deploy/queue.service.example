@@ -1,0 +1,16 @@
+# Install as example in ~/.config/systemd/user/; enable lingering once per account.
+[Unit]
+Description=Example Laravel queue worker
+
+[Service]
+Type=simple
+WorkingDirectory=/home/example/app/current
+ExecStart=/opt/cpanel/ea-php83/root/usr/bin/php artisan queue:work database --queue=default --sleep=3 --tries=5 --timeout=60 --max-time=3600
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=75
+UMask=0027
+
+[Install]
+WantedBy=default.target

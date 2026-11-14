@@ -1,0 +1,3 @@
+# Add to the example account's crontab after launch; preserve unrelated entries.
+# Install only one scheduler. Retire the old Example cleanup cron at cutover.
+* * * * * cd /home/example/app/current && /opt/cpanel/ea-php83/root/usr/bin/php artisan schedule:run >> /home/example/app/shared/storage/logs/scheduler.log 2>&1
