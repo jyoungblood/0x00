@@ -98,6 +98,7 @@ php -d allow_url_fopen=1 -r 'if (!hash_equals(trim(file_get_contents("composer-s
   - Locally: `npm ci` → `npm run build` → check manifest → normalize permissions → commit/push.
   - Server: `down` → pull → Composer install → rsync → `config:clear` → `migrate --force` → `optimize` → optional `queue:restart` → `up`.
 - [ ] Open the site and check login, styles, scripts, uploads, and email.
+- [ ] Check edit/delete request handling too; follow [HTTP method compatibility checks](zero-downtime-deployment.md#check-edit-and-delete-requests-before-launch). Use isolated test data for successful writes.
 - [ ] Run `bash monitor.sh` to follow `storage/logs/laravel.log`.
 
 Node stays on your Mac. Rsync uploads the full `public/build/` folder, including its manifest.
@@ -109,6 +110,7 @@ Old hashed assets stay available because the script does not use `rsync --delete
 | --- | --- |
 | Missing `vendor/autoload.php` | Install Composer dependencies before Artisan commands. |
 | Composer reports missing `ext-imagick` | Install Imagick for the correct PHP version. Do not use `composer update` or ignore the requirement. |
+| DELETE/PATCH arrives as GET or returns a wrong-method 405 | Compare native and POST override requests; see [method checks](zero-downtime-deployment.md#check-edit-and-delete-requests-before-launch). Preserve CSRF and authorization. |
 | Missing Vite manifest | Build locally and upload all of `public/build/`. Git ignores it. |
 | Assets return 403 after rsync | Use directories `755` and files `644` in the local build. The script does this before rsync preserves permissions. |
 | macOS rsync rejects numeric `--chmod` | Use the script's local `find`/`chmod` steps instead. |

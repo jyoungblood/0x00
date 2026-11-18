@@ -48,7 +48,12 @@ Add these entries to `.gitignore`:
 ```gitignore
 /.env.production
 /.env.deploy
+/public/build/
 ```
+
+Check `git ls-files public/build` too: adding an ignore rule does not untrack existing files.
+If it lists generated assets, run `git rm --cached -r public/build` and commit that change; local files stay in place.
+The deploy wrapper uploads the fresh build separately from the source archive.
 
 ## Prepare the hosting account
 
@@ -228,6 +233,50 @@ The shared file persists across deployments. No root command is required for the
 
 Reference: [PHP upload configuration](https://www.php.net/manual/en/ini.core.php#ini.upload-max-filesize).
 
+## Check edit and delete requests before launch
+
+A working login, `/up`, or asset response does not prove that writes work.
+Some hosting configurations divert native `PUT`, `PATCH` or `DELETE` requests before PHP handles them.
+One symptom is Laravel reporting “GET method is not supported” after the client sent DELETE.
+This is a hosting/request compatibility issue, not a Laravel configuration or Deployer switch.
+Check the actual domain; do not assume every account on the same server behaves identically.
+
+Use an existing mutation-only route with a nonexistent ID and no authentication to compare the native verb with an override:
+
+```bash
+# Replace this path with a real DELETE-only route and a guaranteed nonexistent ID.
+curl -i -X DELETE -H 'Accept: application/json' https://example.com/uploads/00000000-0000-0000-0000-000000000000
+curl -i -X POST -H 'Accept: application/json' -H 'X-HTTP-Method-Override: DELETE' https://example.com/uploads/00000000-0000-0000-0000-000000000000
+```
+
+Do not follow redirects during diagnosis. Compare the response body, status and access logs: a wrong-method 405 is different from an expected CSRF/auth rejection. A route that also accepts GET can hide the problem behind a login response. These probes verify routing only; use isolated test data to verify successful edits/deletes and denied access. Keep real production records, files and mail out of smoke tests.
+
+If the host mishandles native verbs, correct its domain-specific configuration or use Laravel's standard POST method override in application requests:
+
+```js
+// Inertia: keep its normal CSRF handling, payload and visit callbacks.
+router.post(url, data, {
+    headers: { 'X-HTTP-Method-Override': 'PATCH' },
+});
+
+// Plain fetch: retain the application's existing CSRF/session handling.
+fetch(url, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: {
+        Accept: 'application/json',
+        'X-CSRF-TOKEN': csrfToken,
+        'X-HTTP-Method-Override': 'DELETE',
+    },
+});
+```
+
+Use the intended verb (`PUT`, `PATCH` or `DELETE`) in the override. Keep existing backend routes, policies and CSRF protection. Merge other headers and preserve any JSON/form payload and error handling. Ordinary forms may use `@method(...)` or `_method`; Wayfinder `.form()` helpers already generate POST overrides where needed. No change is required for correctly working POST/GET calls or Livewire actions.
+
+Apply this only to the application's own Laravel endpoints. Signed direct-to-storage PUTs must keep their signed method, headers and body. Add regression coverage for the actual submit/delete controls, request payload, errors and authorization, then rebuild and deploy assets. Refresh existing browser tabs to load the fix.
+
+References: [Laravel method spoofing](https://laravel.com/docs/13.x/routing#form-method-spoofing), [Inertia custom headers](https://inertiajs.com/docs/v3/the-basics/manual-visits#custom-headers).
+
 ## Optional queue worker
 
 Skip this section for sites without queued work. Leave `queue_worker=false` in `deploy.php`.
@@ -306,7 +355,7 @@ It refuses an unexpected existing symlink or backup conflict.
 If symlink installation fails, it restores the old web directory.
 The initial directory conversion is not atomic. Subsequent `current` switches are atomic.
 
-HTTP checks compare static and PHP-executed revision markers, request `/up`, and fetch entry assets.
+HTTP checks compare static and PHP-executed revision markers, request `/up`, and fetch entry assets. Complete the [edit/delete request checks](#check-edit-and-delete-requests-before-launch) separately; these health checks do not exercise mutations.
 A failed preparation leaves the active release unchanged.
 A failure after publication reports the error and leaves the selected release in place.
 There is no automatic database or code rollback.
