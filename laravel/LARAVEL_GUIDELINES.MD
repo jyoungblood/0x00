@@ -10,81 +10,72 @@
 
 ## 2. Architecture & Code Quality
 
-- Follow established Laravel design patterns, naming conventions, and coding standards.
-- Prefer conventional, well-understood solutions over unusual or highly customized implementations.
-- Keep the codebase organized, consistent, and easy to navigate.
-- Prioritize performance, efficiency, security, readability, and maintainability.
-- Introduce abstractions only when they solve a real problem or meaningfully improve the code.
-- Avoid unnecessary dependencies, indirection, duplication, and complexity.
-- Preserve existing functionality when refactoring or improving code.
+- Prioritize performance, security, consistency, and maintainability.
+- Use PHP types, return types, and typed properties wherever practical.
+- Use DTOs for structured data and Action classes for business logic when they meaningfully improve clarity and organization.
+- Keep controllers and presentation-layer components focused. Extract complex business logic when appropriate.
+- Avoid unnecessary architectural layers, abstractions, and design patterns. Every abstraction should serve a clear purpose.
 
 ## 3. Packages & Dependencies
 
-Prefer established, trusted packages over custom implementations whenever practical.
+Prefer established solutions over custom implementations, in this order:
 
-Use the following order of preference:
+1. **Laravel first-party:** Official Laravel features and packages.
+2. **Trusted community packages:** Well-maintained, widely adopted packages with strong community support.
+3. **Custom implementations:** Only when existing solutions are unsuitable or unnecessarily complex.
 
-1. **Laravel first-party solutions:** Official Laravel features, components, and packages.
-2. **Trusted community packages:** Well-maintained, widely adopted third-party packages with strong community support and a proven track record.
-3. **Custom implementations:** Build our own solutions when existing options are unsuitable or introduce unnecessary complexity.
-
-Favor packages that follow Laravel conventions and integrate naturally with the framework. Avoid reinventing functionality already handled well by established solutions.
+Avoid reinventing functionality already handled well by established packages.
 
 ## 4. Laravel Boost & Documentation
 
-Use [Laravel Boost](https://laravel.com/ai/boost) as a primary resource for Laravel-specific development guidance and application context.
+- Use [Laravel Boost](https://laravel.com/ai/boost) for version-specific documentation, application context, and development guidance.
+- Consult Boost's documentation search and application inspection tools before making assumptions about unfamiliar functionality or existing code.
+- Follow recommendations appropriate to the project's installed Laravel version and dependencies.
 
-- Use Laravel Boost's documentation search to reference current, version-appropriate Laravel documentation and package-specific best practices.
-- Use Boost's available tools to inspect the application's configuration, routes, database schema, models, and other relevant context before making assumptions.
-- Consult Boost when implementing unfamiliar functionality, evaluating architectural approaches, or determining the idiomatic Laravel solution.
-- Prefer verified documentation and actual application context over assumptions or potentially outdated knowledge.
-- Follow the conventions and recommendations appropriate to the project's installed Laravel version and dependencies.
-- Use Boost where relevant and practical without introducing unnecessary tool calls or disrupting straightforward development tasks.
+## 5. Database & Queries
 
-## 5. Frontend Navigation & Prefetching
+- Use Laravel migrations for all schema changes, with appropriate types, constraints, and indexes.
+- Design clear, normalized schemas without unnecessary complexity.
+- Prevent N+1 queries through appropriate eager loading.
+- Keep queries efficient: retrieve only necessary data, use database-level filtering and aggregation, and paginate or chunk large datasets.
+- Use transactions, constraints, and appropriate locking to maintain data integrity.
+- Use parameterized queries and safe mass assignment practices.
+- Avoid premature caching or optimization. Investigate actual query performance when needed.
 
-Use the standard navigation and prefetching capabilities provided by the application's frontend framework to improve perceived performance and responsiveness.
+## 6. Frontend Development
 
-- **Prefetch normal navigation links.** Where appropriate, prefetch destinations for standard navigation links and linked interface elements so pages are ready when users navigate.
-- **Use framework-native methods.** Follow the recommended prefetching approach for the frontend technology in use, such as Livewire, Inertia, or another framework. Prefer built-in capabilities over custom JavaScript or third-party solutions.
-- **Choose appropriate prefetch triggers.** Use hover, intent, viewport visibility, or other supported mechanisms based on the framework's conventions and the expected navigation behavior.
-- **Only prefetch safe, read-only requests.** Never prefetch actions that modify application state or produce side effects.
-- **Do not prefetch form controls or action buttons.** This includes submitting forms, saving changes, deleting records, logging out, or any other state-changing operation.
-- **Avoid unnecessary requests.** Consider bandwidth, server load, and the cost of fetching data. Do not aggressively prefetch expensive pages or large amounts of content without a clear benefit.
-- **Preserve normal navigation behavior.** Prefetching should improve responsiveness without changing application functionality, security, or expected browser behavior.
+- Use reusable components for shared or complex UI, but avoid unnecessary component abstraction.
+- Prefer TypeScript over JavaScript where practical, with appropriate typing for props and application data.
+- Follow the conventions of the frontend framework in use (Livewire, Blade, Inertia, React, Vue, etc.).
+- **Prefetch standard navigation links** using the framework's native prefetching capabilities and appropriate triggers (hover, intent, viewport, etc.).
+- **Never prefetch state-changing actions**, including form submissions, save/delete operations, logout, or other action controls.
+- Avoid aggressive prefetching that creates unnecessary requests or server load.
 
-## 6. Testing Philosophy
+## 7. Testing Philosophy
 
-Maintain a lean, practical test suite focused on protecting important application behavior.
+Maintain a lean test suite focused on important application behavior.
 
-- Prefer end-to-end and feature-level tests over isolated unit tests.
-- Test meaningful functionality, critical workflows, and behavior that needs ongoing regression protection.
-- Write temporary tests as needed when developing, debugging, or validating new features.
-- Not every change requires a permanent test.
-- Remove temporary, redundant, or low-value tests once they are no longer useful.
-- Avoid testing implementation details or maintaining tests solely for coverage metrics.
-- Keep the permanent test suite focused, efficient, and maintainable.
+- Prefer end-to-end and feature tests over unit tests.
+- Test critical workflows and functionality that needs ongoing regression protection.
+- Write temporary tests when useful during development, but not every change requires a permanent test.
+- Remove temporary, redundant, or low-value tests.
+- Avoid testing implementation details or chasing coverage metrics.
 
-## 7. Project Context & Existing Functionality
+## 8. Project Context & Existing Functionality
 
-Before making architectural recommendations or significant changes:
+- Read and understand the product definition, documentation, and roadmap before making significant changes.
+- Preserve existing functionality unless explicitly instructed otherwise.
+- Consider planned features without prematurely implementing or overengineering for them.
+- Treat temporarily disabled features as intentional, not obsolete. For example, registration is disabled during beta but must be re-enabled afterward.
 
-- Read the product definition, project documentation, and roadmap.
-- Understand the application's intended functionality, current behavior, and planned features.
-- Consider future requirements without prematurely implementing or overengineering for them.
-- Preserve existing functionality unless a change is explicitly requested.
-- Treat temporarily disabled functionality as intentional, not necessarily obsolete. For example, user registration is disabled during beta but must remain available for reactivation afterward.
+## 9. Code Review & Improvements
 
-## 8. Code Review & Improvements
+When assessing the codebase:
 
-When reviewing or assessing the codebase:
+- Identify unnecessary complexity, nonstandard patterns, duplication, security issues, and performance problems.
+- Recommend practical improvements using conventional Laravel solutions.
+- Avoid changes driven solely by stylistic preferences or theoretical architectural purity.
+- Prioritize meaningful improvements while preserving existing functionality.
+- Briefly explain the rationale for recommended changes.
 
-- Evaluate adherence to these standards and established Laravel best practices.
-- Identify unnecessary complexity, nonstandard patterns, redundant code, security concerns, and performance issues.
-- Look for opportunities to simplify implementations using built-in Laravel functionality or trusted packages.
-- Recommend improvements that meaningfully increase clarity, consistency, maintainability, or reliability.
-- Avoid proposing changes solely for stylistic preferences or theoretical architectural purity.
-- Prioritize practical improvements while preserving existing application behavior.
-- Explain recommendations clearly, including why a change is beneficial and how it aligns with standard Laravel practices.
-
-**Overall objective:** Build and maintain a clean, secure, performant, and understandable Laravel application using conventional, community-accepted solutions. Prefer the simplest appropriate implementation that follows the standard Laravel happy path, and introduce additional complexity only when genuinely necessary.
+**Overall objective:** Build clean, secure, performant, and understandable Laravel applications using conventional, community-accepted solutions. Prefer the simplest appropriate implementation, with purposeful abstractions and minimal unnecessary complexity.
