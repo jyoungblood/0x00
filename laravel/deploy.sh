@@ -7,6 +7,7 @@ SSH_USER="example"
 SSH_SERVER="0.0.0.0"
 SSH_PORT="2200"
 DEPLOYMENT_PATH="/home/example/public_html"
+EXPECTED_DATABASE="example_laravel_production"
 # Enable only after queue workers are managed by Supervisor/systemd.
 RESTART_QUEUE=0
 
@@ -17,6 +18,14 @@ if [[ "$(git branch --show-current)" != "$GIT_BRANCH" ]]; then
     echo "Switch to $GIT_BRANCH before deploying." >&2
     exit 1
 fi
+
+# Validate credentials before building, committing, or touching production.
+if git ls-files --error-unmatch .env.deploy >/dev/null 2>&1 || ! git check-ignore -q .env.deploy; then
+    echo "Keep .env.deploy untracked and add it to .gitignore before deploying." >&2
+    exit 1
+fi
+php deploy/read-credentials.php
+test -f deploy/migrate.php
 
 # Build on the Mac; Node is not needed on the server.
 npm ci
@@ -79,8 +88,19 @@ remote_bash <<'REMOTE'
 cd "$1"
 test "$(git rev-parse HEAD)" = "$3"
 test -s public/build/manifest.json
-php artisan config:clear
-php artisan migrate --force
+php artisan config:cache
+REMOTE
+
+# Pass credentials through SSH stdin, never command arguments or a server file.
+# The helper changes only this CLI process; the cached web credentials stay intact.
+printf -v migration_command 'cd %q && test "$(git rev-parse HEAD)" = %q && php deploy/migrate.php %q' \
+    "$DEPLOYMENT_PATH" "$DEPLOY_COMMIT" "$EXPECTED_DATABASE"
+php deploy/read-credentials.php --payload |
+    ssh -p "$SSH_PORT" "$SSH_USER@$SSH_SERVER" "$migration_command"
+
+remote_bash <<'REMOTE'
+cd "$1"
+test "$(git rev-parse HEAD)" = "$3"
 php artisan optimize
 if [[ "$4" == 1 ]]; then
     php artisan queue:restart

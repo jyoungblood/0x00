@@ -8,7 +8,8 @@ Run server commands as the cPanel account, except the admin steps.
 
 ## One-time setup
 
-- [ ] @WHM/cPanel — create the account, database, database user, DNS, and HTTPS certificate.
+- [ ] @WHM/cPanel — create the account, DNS, and HTTPS certificate.
+- [ ] Create the database and both users using [Database names and users](#database-names-and-users).
 - [ ] Enable SSH access and keys. Give the server account access to pull the Git repository.
 - [ ] Select the app's required PHP version in MultiPHP Manager. Our deployment used PHP 8.3.
   - Check `php -v` over SSH. CLI and PHP-FPM must have compatible versions and extensions.
@@ -40,6 +41,60 @@ Keep the same `APP_KEY` for every later deployment.
   - R2 does not remove this requirement. Our account owned both directories and ran its own PHP-FPM pool.
   - Existing writable permissions are enough. Do not change ownership to `nobody` or use `777`.
 - [ ] If the app uses local public uploads, run `php artisan storage:link`. R2-only uploads do not need this.
+
+## Database names and users
+
+`$account` means the cPanel account name. For account `example`, use:
+
+| Environment | Database name | Example |
+| --- | --- | --- |
+| Production | `$account_laravel_production` | `example_laravel_production` |
+| Local development | `$account_laravel_local` | `example_laravel_local` |
+
+Create the production database on the server and the local database on your development machine.
+If cPanel adds the account prefix automatically, enter only the suffix, such as `laravel_production`, `web`, or `deploy`.
+
+Create both production MySQL users with separate passwords. Assign each user to the production database with only these privileges:
+
+| User | Purpose | Privileges |
+| --- | --- | --- |
+| `$account_web` | Web requests and queue workers | SELECT, INSERT, UPDATE, DELETE |
+| `$account_deploy` | Deployment migrations | SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, DROP, INDEX, REFERENCES |
+
+Grant these privileges only on the application's database. Do not select **ALL PRIVILEGES** or grant server-wide access.
+
+Use the web user in the production `.env`:
+
+```dotenv
+DB_DATABASE=example_laravel_production
+DB_USERNAME=example_web
+DB_PASSWORD='your-web-password'
+```
+
+Use `DB_DATABASE=example_laravel_local` locally, with local credentials.
+Keep the deploy password separate from the web configuration and out of Git. Use it only for the migration process.
+
+Copy the [deploy helper folder](deploy/) into the app's local root alongside `deploy.sh`. Commit these helper files.
+Add `.env.deploy` to the app's `.gitignore`, then create your private local credentials file:
+
+```bash
+(umask 077; cp deploy/credentials.env.example .env.deploy)
+```
+
+Edit `.env.deploy` with the production migration user and password:
+
+```dotenv
+DEPLOY_DB_USERNAME=example_deploy
+DEPLOY_DB_PASSWORD='your-deploy-password'
+```
+
+Use dotenv quoting for special characters. Keep this file local, untracked, and readable only by you (`chmod 600 .env.deploy`).
+Run `composer install` locally so the helper can read dotenv files.
+
+The script sends migration credentials through SSH stdin. It does not upload the credentials file.
+The migration helper changes credentials only in its PHP process. Laravel's cached web configuration keeps `$account_web`.
+It requires production mode, `APP_DEBUG=false`, and the database named by `EXPECTED_DATABASE` in `deploy.sh`.
+Database URLs and separate read/write connections need an adapted helper.
 
 ## Change the document root in WHM
 
@@ -87,16 +142,18 @@ php -d allow_url_fopen=1 -r 'if (!hash_equals(trim(file_get_contents("composer-s
 ## Deploy from your Mac
 
 - [ ] Copy [deploy.sh](deploy.sh) and [monitor.sh](monitor.sh) into the app's local root.
+- [ ] Copy [deploy/](deploy/) and configure the private `.env.deploy` file as described above.
 - [ ] Set the SSH account, server, port, and paths in both scripts. The sample port is `2200`.
+- [ ] Set `EXPECTED_DATABASE` in `deploy.sh` to `$account_laravel_production`.
 - [ ] Use the **Laravel recipe** in `deploy.sh`, including Composer, asset upload, migrations, and cache commands.
   - The generic Git push/pull script alone is not enough.
   - Keep `RESTART_QUEUE=0` until [queue workers](queue-worker-setup.md) are configured.
-- [ ] Keep `.env`, `vendor/`, `node_modules/`, and `public/build/` ignored by Git.
+- [ ] Keep `.env`, `.env.deploy`, `vendor/`, `node_modules/`, and `public/build/` ignored by Git.
 - [ ] Review local changes. The script stages and commits **all** changes, then pushes `main`.
 - [ ] Back up the production database before migrations. Run only one deployment at a time.
 - [ ] Run `bash deploy.sh`.
   - Locally: `npm ci` → `npm run build` → check manifest → normalize permissions → commit/push.
-  - Server: `down` → pull → Composer install → rsync → `config:clear` → `migrate --force` → `optimize` → optional `queue:restart` → `up`.
+  - Server: `down` → pull → Composer install → rsync → `config:cache` → migrations as the deploy user → `optimize` → optional `queue:restart` → `up`.
 - [ ] Open the site and check login, styles, scripts, uploads, and email.
 - [ ] Check edit/delete request handling too; follow [HTTP method compatibility checks](zero-downtime-deployment.md#check-edit-and-delete-requests-before-launch). Use isolated test data for successful writes.
 - [ ] Run `bash monitor.sh` to follow `storage/logs/laravel.log`.

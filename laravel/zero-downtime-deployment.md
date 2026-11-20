@@ -73,6 +73,10 @@ The script also checks systemd lingering. Basic sites without background workers
 
 ## Use separate database users
 
+Use `$account_laravel_production` for the production database and `$account_laravel_local` for local development.
+`$account` means the cPanel account name: for example, `example_laravel_production` and `example_laravel_local`.
+Create the local database on your development machine.
+
 Grant privileges only on the application's database:
 
 | User | Privileges |
