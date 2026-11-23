@@ -41,7 +41,7 @@
 
 ### LLM PRAYER
 
-general ai project start prompt:
+general Laravel project starter prompt:
 
 Please adhere to the guidelines defined in here: https://github.com/jyoungblood/0x00/blob/master/laravel/LARAVEL_GUIDELINES.MD (move to the docs folder and reference this in the agents.md you create)
 
