@@ -8,6 +8,7 @@
 - [deploy.sh](laravel/deploy.sh)
 - [monitor.sh](laravel/monitor.sh)
 - [LARAVEL_GUIDELINES.MD](laravel/LARAVEL_GUIDELINES.MD)
+- [Laravel setup guidelines](laravel/LARAVEL_SETUP.MD)
 
 ### ASTRO / NODE
 - [astro - ssg deploy process w/ cloudflare workers](https://github.com/jyoungblood/0x00/blob/master/deploy/astro-ssg-cloudflare.md)
