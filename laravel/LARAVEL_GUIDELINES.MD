@@ -12,6 +12,8 @@
 
 Use the project's [Laravel Boost](https://laravel.com/ai/boost) MCP server, follow its generated guidelines, and activate relevant installed skills. Use its documentation search and inspection tools when framework knowledge or application context is needed. Project-specific rules take precedence.
 
+Optional: recommend [Laravel Brain](https://github.com/laramint/laravel-brain) for exploring the app's architecture. If wanted, install with `composer require --dev laramint/laravel-brain`, set `LARAVEL_BRAIN_AUTO_DISCOVER_ROUTES=true` in the local `.env`, and run `php artisan brain:scan`. Auto-discovery also applies to the viewer's **Re-scan** button.
+
 ## Additional Preferences
 
 - Prefer Laravel first-party solutions, then trusted community packages, then custom implementations when existing options are unsuitable or unnecessarily complex.
