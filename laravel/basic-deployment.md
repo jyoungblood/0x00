@@ -13,6 +13,8 @@ Run server commands as the cPanel account, except the admin steps.
 - [ ] Enable SSH access and keys. Give the server account access to pull the Git repository.
 - [ ] Select the app's required PHP version in MultiPHP Manager. Our deployment used PHP 8.3.
   - Check `php -v` over SSH. CLI and PHP-FPM must have compatible versions and extensions.
+- [ ] Enable **PHP-FPM** for the domain. Do not use the inherited **FastCGI** handler, which is our servers' system default.
+- [ ] Recommended: enable **OPcache** for web requests. Our machines already have it enabled.
 - [ ] Put the repository on branch `main` in `/home/example/public_html`.
 - [ ] Change the domain's document root to `/home/example/public_html/public` for HTTP and HTTPS.
   - For the account's main domain, follow [Change the document root in WHM](#change-the-document-root-in-whm).

@@ -145,6 +145,9 @@ Keep the local environment and server environment consistent.
 
 ## Configure Apache and PHP-FPM once
 
+Enable **PHP-FPM** for the domain. Do not use the inherited **FastCGI** handler, which is our servers' system default.
+**OPcache is recommended** for web requests. Our machines already have it enabled.
+
 The tested layout keeps the existing primary-domain document root:
 
 ```text
