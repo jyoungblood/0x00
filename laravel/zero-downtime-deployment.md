@@ -40,6 +40,7 @@ Edit `deploy.php` for the site:
 | Queue worker | `false` for sites without a worker |
 
 This recipe expects Laravel, MySQL, Vite, `npm ci`, `npm run build`, a `main` branch and an `origin` remote.
+Complete the [required Pun and release-check setup](LARAVEL_SETUP.MD#pun-and-release-checks-required). The wrapper requires `composer predeploy`, including isolated tests and both dependency audits, and runs it locally before any push or production access.
 It runs pending Laravel migrations. It is not a generic plain-PHP or no-frontend recipe.
 The server receives a built archive. It needs neither Node nor a GitHub SSH key.
 
@@ -344,7 +345,7 @@ Prepare the release:
 ./deploy.sh --prepare
 ```
 
-The command commits changes interactively, builds assets, pushes that exact commit and uploads the release.
+The command commits changes interactively, runs `composer predeploy` to install locked dependencies, audit, check, test and build, then pushes that exact commit and uploads the release.
 It installs production dependencies, creates caches and checks the database and assets.
 It does not run migrations or change the live web root.
 
@@ -355,6 +356,8 @@ Publish the prepared release:
 ```bash
 ./deploy.sh --activate
 ```
+
+Activation requires a clean checkout of the prepared release's commit. It reruns the local release gate and refuses to activate a different prepared revision. After a new advisory or check failure, fix and prepare a new release instead of bypassing the gate.
 
 Activation runs pending migrations and selects the prepared release.
 It preserves the old directory as `public_html.before-laravel`, then installs the fixed public symlink.
@@ -391,3 +394,7 @@ Use additive schema changes first. Remove old columns only after old code and jo
 Code rollback does not restore the database.
 
 [Basic deployment](basic-deployment.md) · [Queue worker setup](queue-worker-setup.md)
+
+## Test the local deployment gate
+
+Run `python3 laravel/deployer/test_predeploy.py` from the 0x00 repository. For an installed wrapper, pass its absolute path and branch: `python3 laravel/deployer/test_predeploy.py /path/to/app/deploy.sh main`. These tests use temporary copies and fake commands; they never push, connect to production or install dependencies.

@@ -16,6 +16,9 @@ Use the project's [Laravel Boost](https://laravel.com/ai/boost) MCP server, foll
 
 ## Additional Preferences
 
+- Use the project's pinned Pun configuration after PHP edits; review automatic fixes locally. Keep PHPStan/Larastan checks required. Follow [the required checks and security workflow](LARAVEL_SETUP.MD#pun-and-release-checks-required) for setup and releases.
+- Run the full local `composer predeploy` gate before releasing. Resolve check failures and dependency advisories before production access; scheduled GitHub automation is an optional later layer.
+
 - Prefer Laravel first-party solutions, then trusted community packages, then custom implementations when existing options are unsuitable or unnecessarily complex.
 - Prefer TypeScript where practical.
 - Prefetch safe navigation links using framework-native capabilities; never prefetch state-changing actions or create excessive requests.

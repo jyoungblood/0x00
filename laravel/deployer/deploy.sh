@@ -16,14 +16,6 @@ if [[ ! -f vendor/bin/dep ]]; then
     echo "Run composer install first (including development dependencies)." >&2
     exit 1
 fi
-export DEPLOY_LOCK_TOKEN
-DEPLOY_LOCK_TOKEN="$(php -r 'echo bin2hex(random_bytes(16));')"
-if [[ "$deploy_task" != release:prepare ]]; then
-    php deploy/read-credentials.php
-fi
-if [[ "$deploy_task" == release:activate ]]; then
-    exec php vendor/bin/dep "$deploy_task" production
-fi
 if [[ "$(git branch --show-current)" != main ]]; then
     echo "Switch to main before deploying." >&2
     exit 1
@@ -31,6 +23,10 @@ fi
 
 # Dirty trees require an interactive commit; already-committed CI/Orb builds can run unattended.
 if [[ -n "$(git status --porcelain)" ]]; then
+    if [[ "$deploy_task" == release:activate ]]; then
+        echo "Activate from a clean checkout of the prepared release's commit." >&2
+        exit 1
+    fi
     if [[ ! -t 0 ]]; then
         echo "Commit changes before deploying noninteractively." >&2
         exit 1
@@ -41,13 +37,21 @@ if [[ -n "$(git status --porcelain)" ]]; then
     git commit -m "${commit_message:-Updates - $(date '+%Y-%m-%d %T')}"
 fi
 revision="$(git rev-parse HEAD)"
-npm ci
-npm run build
+# All local checks must pass before pushing, uploading, or activating a release.
+composer predeploy
 test -s public/build/manifest.json
 test -d public/build/assets
 if [[ -n "$(git status --porcelain)" || "$(git rev-parse HEAD)" != "$revision" ]]; then
     echo "Tracked source changed during the build; review and rerun." >&2
     exit 1
+fi
+export DEPLOY_LOCK_TOKEN
+DEPLOY_LOCK_TOKEN="$(php -r 'echo bin2hex(random_bytes(16));')"
+if [[ "$deploy_task" != release:prepare ]]; then
+    php deploy/read-credentials.php
+fi
+if [[ "$deploy_task" == release:activate ]]; then
+    exec php vendor/bin/dep "$deploy_task" production --revision="$revision"
 fi
 git push origin "$revision:refs/heads/main"
 

@@ -85,6 +85,11 @@ task('release:mark_prepared', function (): void {
 });
 
 task('release:require_prepared', function (): void {
+    $revision = (string) input()->getOption('revision');
+    if (! preg_match('/^[a-f0-9]{40}$/', $revision)
+        || trim(run('cat {{release_path}}/REVISION')) !== $revision) {
+        throw new RuntimeException('Prepared release must match the commit checked locally by ./deploy.sh --activate.');
+    }
     run('test -s {{release_path}}/.prepared && cmp {{release_path}}/REVISION {{release_path}}/.prepared');
     run('test -s {{release_path}}/deploy/switch-webroot.sh && test -s {{release_path}}/public/deploy-revision.php && test -L {{release_path}}/public/.user.ini && test -L {{release_path}}/public/.well-known');
 });

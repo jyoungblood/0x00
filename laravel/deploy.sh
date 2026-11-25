@@ -27,9 +27,8 @@ fi
 php deploy/read-credentials.php
 test -f deploy/migrate.php
 
-# Build on the Mac; Node is not needed on the server.
-npm ci
-npm run build
+# Check and build locally before any push or production access.
+composer predeploy
 test -s public/build/manifest.json
 # Normalize generated assets locally; rsync -a preserves these permissions.
 # macOS openrsync does not support numeric --chmod rules.

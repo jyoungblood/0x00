@@ -143,6 +143,7 @@ php -d allow_url_fopen=1 -r 'if (!hash_equals(trim(file_get_contents("composer-s
 
 ## Deploy from your Mac
 
+- [ ] Complete the [required Pun and release-check setup](LARAVEL_SETUP.MD#pun-and-release-checks-required), including the `composer predeploy` script and isolated test environment.
 - [ ] Copy [deploy.sh](deploy.sh) and [monitor.sh](monitor.sh) into the app's local root.
 - [ ] Copy [deploy/](deploy/) and configure the private `.env.deploy` file as described above.
 - [ ] Set the SSH account, server, port, and paths in both scripts. The sample port is `2200`.
@@ -154,7 +155,7 @@ php -d allow_url_fopen=1 -r 'if (!hash_equals(trim(file_get_contents("composer-s
 - [ ] Review local changes. The script stages and commits **all** changes, then pushes `main`.
 - [ ] Back up the production database before migrations. Run only one deployment at a time.
 - [ ] Run `bash deploy.sh`.
-  - Locally: `npm ci` → `npm run build` → check manifest → normalize permissions → commit/push.
+  - Locally: `composer predeploy` (locked installs, audits, Pun, Larastan, tests and build) → check manifest → normalize permissions → commit/push. A failed check stops before production access.
   - Server: `down` → pull → Composer install → rsync → `config:cache` → migrations as the deploy user → `optimize` → optional `queue:restart` → `up`.
 - [ ] Open the site and check login, styles, scripts, uploads, and email.
 - [ ] Check edit/delete request handling too; follow [HTTP method compatibility checks](zero-downtime-deployment.md#check-edit-and-delete-requests-before-launch). Use isolated test data for successful writes.
